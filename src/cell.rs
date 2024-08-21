@@ -32,6 +32,10 @@ impl Cell {
 
         positions
     }
+
+    pub fn position(&self) -> (i32, i32) {
+        (self.x, self.y)
+    }
 }
 
 #[derive(Debug)]

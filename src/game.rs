@@ -46,6 +46,10 @@ impl Game {
         new_live_cells
     }
 
+    pub fn live_cells(&self) -> Vec<(i32, i32)> {
+        self.live_cells.iter().map(|cell| cell.position()).collect()
+    }
+
     pub fn update_game(&mut self) {
         self.live_cells = self.new_live_cells();
     }
