@@ -20,24 +20,6 @@ impl Game {
         }
     }
 
-    fn living_neighbours(&self, cell: &Cell) -> Vec<Cell>{
-        let mut neighbours = Vec::new();
-
-        for neighbour_cell in self.live_cells.iter() {
-            if neighbour_cell == cell {
-                continue;
-            }
-
-            if neighbour_cell.x == cell.x - 1 || neighbour_cell.x == cell.x || neighbour_cell.x == cell.x + 1 {
-                if neighbour_cell.y == cell.y - 1 || neighbour_cell.y == cell.y || neighbour_cell.y == cell.y + 1 {
-                    neighbours.push(neighbour_cell.clone());
-                }
-            }
-        }
-
-        neighbours
-    }
-
     // Returns the positions of the 8 neighbours of a cell
     fn neighbour_positions(&self, cell: &Cell) -> Vec<Cell> {
         let mut positions = Vec::with_capacity(8);
@@ -55,16 +37,20 @@ impl Game {
         positions
     }
 
-    // Create a new_live_live cells vec by populating it with the dead cells that have 3 live neighbours
-    pub fn add_dead_cells(&self) -> Vec<Cell> {
+    // Create a new_live_live cells vec by populating it with the dead cells that have 3 live neighbours and the current live cells that have 2 or 3 live neighbours
+    pub fn new_live_cells(&self) -> Vec<Cell> {
         let mut dead_cells_map = HashMap::new();
+        let mut neighbours_count = HashMap::new();
 
         for cell in self.live_cells.iter() {
             for neighbor in self.neighbour_positions(cell) {
                 if !self.live_cells.contains(&neighbor) {
                     let counter = dead_cells_map.entry(neighbor).or_insert(0);
                     *counter += 1;
-                } 
+                } else {
+                    let counter = neighbours_count.entry(cell.clone()).or_insert(0);
+                    *counter += 1;
+                }
             }
         }
 
@@ -75,22 +61,17 @@ impl Game {
             }
         }
 
+        for (cell, count) in neighbours_count {
+            if count == 2 || count == 3 {
+                new_live_cells.push(cell);
+            }
+        }
+
         new_live_cells
     }
 
     pub fn update_game(&mut self) -> Result<(), ConwaysError> {
-        // check 4
-        let mut new_live_cells = self.add_dead_cells();
-
-        //check 1,2 y 3
-        for cell in self.live_cells.iter() {
-            let neighbours = self.living_neighbours(cell);
-            if neighbours.len() == 2 || neighbours.len() == 3 {
-                new_live_cells.push(cell.clone());
-            }
-        }
-
-        self.live_cells = new_live_cells;
+        self.live_cells = self.new_live_cells();
 
         Ok(())
     }
