@@ -8,6 +8,14 @@ pub struct Game {
 }
 
 impl Game {
+    pub fn new_with_seed(seed: Vec<(i32,i32)>) -> Self {
+        let live_cells = seed.iter().map(|(x,y)| Cell::new(*x,*y)).collect();
+
+        Game {
+            live_cells
+        }
+    }
+
     pub fn new() -> Self {
         let live_cells = vec![
             Cell::new(1, 3),
@@ -77,13 +85,12 @@ impl Game {
     }
 }
 
-// le dice a cargo q corra los tests solo si se corre con `cargo test`
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_update_game() {
+    fn test_basic_seed() {
         let mut game = Game::new();
 
         let live_cells = game.live_cells.clone();
@@ -112,6 +119,11 @@ mod tests {
         let _result = game.update_game();
 
         let _result = game.update_game();
+
+        //  x                  x
+        //  x   ->  x x x  ->  x
+        //  x                  x
+
         let live_cells = game.live_cells.clone();
 
         assert_eq!(live_cells.len(), 3);
@@ -119,5 +131,97 @@ mod tests {
         assert!(live_cells.contains(&Cell::new(1, 1)));
         assert!(live_cells.contains(&Cell::new(1, 2)));
         assert!(live_cells.contains(&Cell::new(1, 3)));
+    }
+
+    #[test]
+    fn test_new_more_complex_seed() {
+        let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
+        let _ = game.update_game();
+
+        //                 x
+        //  x x x        x   x
+        //  x   x  ->  x       x
+        //  x x x        x   x
+        //                 x
+
+        let live_cells = game.live_cells.clone();
+
+        assert_eq!(live_cells.len(), 8);
+
+        assert!(live_cells.contains(&Cell::new(2, 0)));
+        assert!(live_cells.contains(&Cell::new(1, 1)));
+        assert!(live_cells.contains(&Cell::new(0, 2)));
+        assert!(live_cells.contains(&Cell::new(1, 3)));
+        assert!(live_cells.contains(&Cell::new(2, 4)));
+        assert!(live_cells.contains(&Cell::new(3, 3)));
+        assert!(live_cells.contains(&Cell::new(4, 2)));
+        assert!(live_cells.contains(&Cell::new(3, 1)));
+    }
+
+    #[test]
+    fn test_complex_seed_second_iteration() {
+        let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
+
+        let _ = game.update_game();
+        let _ = game.update_game();
+
+        //                 x              x
+        //  x x x        x   x          x x x
+        //  x   x  ->  x       x  ->  x x   x x
+        //  x x x        x   x          x x x
+        //                 x              x
+
+        let live_cells = game.live_cells.clone();
+
+        assert_eq!(live_cells.len(), 12);
+
+        assert!(live_cells.contains(&Cell::new(2, 0)));
+        assert!(live_cells.contains(&Cell::new(1, 1)));
+        assert!(live_cells.contains(&Cell::new(0, 2)));
+        assert!(live_cells.contains(&Cell::new(1, 3)));
+        assert!(live_cells.contains(&Cell::new(2, 4)));
+        assert!(live_cells.contains(&Cell::new(3, 3)));
+        assert!(live_cells.contains(&Cell::new(4, 2)));
+        assert!(live_cells.contains(&Cell::new(3, 1)));
+
+        assert!(live_cells.contains(&Cell::new(2, 1)));
+        assert!(live_cells.contains(&Cell::new(1, 2)));
+        assert!(live_cells.contains(&Cell::new(2, 3)));
+        assert!(live_cells.contains(&Cell::new(3, 2)));
+    }
+
+    #[test]
+    fn test_complex_seed_third_iteration() {
+        let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
+
+        let _ = game.update_game();
+        let _ = game.update_game();
+        let _ = game.update_game();
+
+        //                 x              x            x x x
+        //  x x x        x   x          x x x        x       x
+        //  x   x  ->  x       x  ->  x x   x x  ->  x       x
+        //  x x x        x   x          x x x        x       x
+        //                 x              x            x x x
+
+        let live_cells = game.live_cells.clone();
+
+        assert_eq!(live_cells.len(), 12);
+
+        assert!(live_cells.contains(&Cell::new(0, 1)));
+        assert!(live_cells.contains(&Cell::new(0, 2)));
+        assert!(live_cells.contains(&Cell::new(0, 3)));
+
+        assert!(live_cells.contains(&Cell::new(1, 4)));
+        assert!(live_cells.contains(&Cell::new(2, 4)));
+        assert!(live_cells.contains(&Cell::new(3, 4)));
+
+        assert!(live_cells.contains(&Cell::new(4, 3)));
+        assert!(live_cells.contains(&Cell::new(4, 2)));
+        assert!(live_cells.contains(&Cell::new(4, 1)));
+
+        assert!(live_cells.contains(&Cell::new(1, 0)));
+        assert!(live_cells.contains(&Cell::new(2, 0)));
+        assert!(live_cells.contains(&Cell::new(3, 0)));
     }
 }
