@@ -1,2 +1,2 @@
-pub mod cell;
+mod cell;
 pub mod game;

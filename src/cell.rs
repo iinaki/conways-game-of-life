@@ -1,7 +1,7 @@
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub struct Cell {
-    pub x: i32,
-    pub y: i32,
+    x: i32,
+    y: i32,
 }
 
 impl Cell {
