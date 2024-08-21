@@ -1,12 +1,8 @@
-use macroquad::prelude::*;
+use conways_game_of_life::conways_error::ConwaysError;
+use conways_game_of_life::game::Game;
 
-#[macroquad::main("BasicShapes")]
-async fn main() {
-    loop {
-        clear_background(WHITE);
-
-        draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, BLACK);
-
-        next_frame().await
-    }
+fn main() -> Result<(), ConwaysError>{
+    let game = Game::new();
+    
+    Ok(())
 }
