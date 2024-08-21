@@ -8,7 +8,7 @@ pub struct Game {
 
 impl Game {
     pub fn new_with_seed(seed: Vec<(i32, i32)>) -> Self {
-        let live_cells = seed.iter().map(|(x, y)| Cell::new(*x, *y)).collect();
+        let live_cells = seed.into_iter().map(|(x, y)| Cell::new(x, y)).collect();
 
         Game { live_cells }
     }
