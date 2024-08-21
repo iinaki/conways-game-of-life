@@ -6,14 +6,6 @@ pub struct Game {
     live_cells: Vec<Cell>,
 }
 
-impl Default for Game {
-    fn default() -> Self {
-        let live_cells = vec![Cell::new(1, 3), Cell::new(1, 2), Cell::new(1, 1)];
-
-        Game { live_cells }
-    }
-}
-
 impl Game {
     pub fn new_with_seed(seed: Vec<(i32, i32)>) -> Self {
         let live_cells = seed.iter().map(|(x, y)| Cell::new(*x, *y)).collect();
@@ -73,7 +65,7 @@ mod tests {
 
     #[test]
     fn basic_seed() {
-        let mut game = Game::default();
+        let mut game = Game::new_with_seed(vec![(1, 3), (1, 2), (1, 1)]);
 
         let live_cells = game.live_cells.clone();
         println!("LIVE CELLS 0 {:?}", live_cells);
@@ -96,7 +88,7 @@ mod tests {
 
     #[test]
     fn second_iteration_should_return_to_original_state() {
-        let mut game = Game::default();
+        let mut game = Game::new_with_seed(vec![(1, 3), (1, 2), (1, 1)]);
 
         game.update_game();
 

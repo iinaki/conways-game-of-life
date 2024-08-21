@@ -6,7 +6,7 @@ pub struct Cell {
 
 impl Cell {
     pub fn new(x: i32, y: i32) -> Self {
-        Cell { x, y }   
+        Cell { x, y }
     }
 
     // Returns the positions of the 8 neighbours of a cell
@@ -19,7 +19,7 @@ impl Cell {
                     continue;
                 }
 
-                if self.x + dx < 1 || self.y + dy < 1 {
+                if self.x + dx < 0 || self.y + dy < 0 {
                     continue;
                 }
 
