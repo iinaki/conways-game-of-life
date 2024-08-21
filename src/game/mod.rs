@@ -90,7 +90,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_basic_seed() {
+    fn basic_seed() {
         let mut game = Game::new();
 
         let live_cells = game.live_cells.clone();
@@ -113,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    fn test_second_iteration_should_return_to_original_state() {
+    fn second_iteration_should_return_to_original_state() {
         let mut game = Game::new();
 
         let _result = game.update_game();
@@ -134,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    fn test_new_more_complex_seed() {
+    fn new_more_complex_seed() {
         let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
         let _ = game.update_game();
 
@@ -159,7 +159,7 @@ mod tests {
     }
 
     #[test]
-    fn test_complex_seed_second_iteration() {
+    fn complex_seed_second_iteration() {
         let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
 
         let _ = game.update_game();
@@ -191,7 +191,7 @@ mod tests {
     }
 
     #[test]
-    fn test_complex_seed_third_iteration() {
+    fn complex_seed_third_iteration() {
         let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
 
         let _ = game.update_game();
