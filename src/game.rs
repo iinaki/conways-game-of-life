@@ -53,10 +53,6 @@ impl Game {
     pub fn contains(&self, cell: &Cell) -> bool {
         self.live_cells.contains(cell)
     }
-
-    pub fn live_cells_amount(&self) -> usize {
-        self.live_cells.len()
-    }
 }
 
 #[cfg(test)]
@@ -79,7 +75,7 @@ mod tests {
         //  x   ->  x x x
         //  x
 
-        assert_eq!(game.live_cells_amount(), 3);
+        assert_eq!(game.live_cells.len(), 3);
 
         assert!(game.contains(&Cell::new(0, 2)));
         assert!(game.contains(&Cell::new(1, 2)));
@@ -98,7 +94,7 @@ mod tests {
         //  x   ->  x x x  ->  x
         //  x                  x
 
-        assert_eq!(game.live_cells_amount(), 3);
+        assert_eq!(game.live_cells.len(), 3);
 
         assert!(game.contains(&Cell::new(1, 1)));
         assert!(game.contains(&Cell::new(1, 2)));
@@ -128,7 +124,7 @@ mod tests {
         //  x x x        x   x
         //                 x
 
-        assert_eq!(game.live_cells_amount(), 8);
+        assert_eq!(game.live_cells.len(), 8);
 
         assert!(game.contains(&Cell::new(2, 0)));
         assert!(game.contains(&Cell::new(1, 1)));
@@ -165,7 +161,7 @@ mod tests {
         //  x x x        x   x          x x x
         //                 x              x
 
-        assert_eq!(game.live_cells_amount(), 12);
+        assert_eq!(game.live_cells.len(), 12);
 
         assert!(game.contains(&Cell::new(2, 0)));
         assert!(game.contains(&Cell::new(1, 1)));
@@ -208,7 +204,7 @@ mod tests {
         //  x x x        x   x          x x x        x       x
         //                 x              x            x x x
 
-        assert_eq!(game.live_cells_amount(), 12);
+        assert_eq!(game.live_cells.len(), 12);
 
         assert!(game.contains(&Cell::new(0, 1)));
         assert!(game.contains(&Cell::new(0, 2)));
