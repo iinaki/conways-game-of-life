@@ -9,7 +9,21 @@ const SQUARES: i16 = 16;
 
 #[macroquad::main("Conway's Game of Life")]
 async fn main() {
-    let mut game = Game::new_with_seed(vec![(1, 3), (1, 2), (1, 1)]);
+    //let mut game = Game::new_with_seed(vec![(1, 3), (1, 2), (1, 1)]);
+
+    let mut game = Game::new_with_seed(
+        [
+            (6, 6),
+            (6, 7),
+            (6, 8),
+            (7, 6),
+            (7, 8),
+            (8, 6),
+            (8, 7),
+            (8, 8),
+        ]
+        .to_vec(),
+    );
 
     let mut game_over = false;
 
@@ -57,7 +71,7 @@ async fn main() {
             }
         }
         
-        sleep(Duration::from_secs(3));
+        sleep(Duration::from_secs(2));
 
         game.update_game();
         next_frame().await;
