@@ -19,6 +19,10 @@ impl Cell {
                     continue;
                 }
 
+                if self.x + dx < 1 || self.y + dy < 1 {
+                    continue;
+                }
+
                 positions.push(Cell {
                     x: self.x + dx,
                     y: self.y + dy,
