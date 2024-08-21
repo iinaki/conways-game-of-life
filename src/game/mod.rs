@@ -83,6 +83,14 @@ impl Game {
 
         Ok(())
     }
+
+    pub fn contains(&self, cell: &Cell) -> bool {
+        self.live_cells.contains(cell)
+    }
+
+    pub fn live_cells_amount(&self) -> usize {
+        self.live_cells.len()
+    }
 }
 
 #[cfg(test)]
@@ -104,11 +112,11 @@ mod tests {
         //  x   ->  x x x
         //  x
 
-        assert_eq!(live_cells.len(), 3);
+        assert_eq!(game.live_cells_amount(), 3);
 
-        assert!(live_cells.contains(&Cell::new(0, 2)));
-        assert!(live_cells.contains(&Cell::new(1, 2)));
-        assert!(live_cells.contains(&Cell::new(2, 2)));
+        assert!(game.contains(&Cell::new(0, 2)));
+        assert!(game.contains(&Cell::new(1, 2)));
+        assert!(game.contains(&Cell::new(2, 2)));
 
     }
 
@@ -123,14 +131,12 @@ mod tests {
         //  x                  x
         //  x   ->  x x x  ->  x
         //  x                  x
+        
+        assert_eq!(game.live_cells_amount(), 3);
 
-        let live_cells = game.live_cells.clone();
-
-        assert_eq!(live_cells.len(), 3);
-
-        assert!(live_cells.contains(&Cell::new(1, 1)));
-        assert!(live_cells.contains(&Cell::new(1, 2)));
-        assert!(live_cells.contains(&Cell::new(1, 3)));
+        assert!(game.contains(&Cell::new(1, 1)));
+        assert!(game.contains(&Cell::new(1, 2)));
+        assert!(game.contains(&Cell::new(1, 3)));
     }
 
     #[test]
@@ -144,18 +150,16 @@ mod tests {
         //  x x x        x   x
         //                 x
 
-        let live_cells = game.live_cells.clone();
+        assert_eq!(game.live_cells_amount(), 8);
 
-        assert_eq!(live_cells.len(), 8);
-
-        assert!(live_cells.contains(&Cell::new(2, 0)));
-        assert!(live_cells.contains(&Cell::new(1, 1)));
-        assert!(live_cells.contains(&Cell::new(0, 2)));
-        assert!(live_cells.contains(&Cell::new(1, 3)));
-        assert!(live_cells.contains(&Cell::new(2, 4)));
-        assert!(live_cells.contains(&Cell::new(3, 3)));
-        assert!(live_cells.contains(&Cell::new(4, 2)));
-        assert!(live_cells.contains(&Cell::new(3, 1)));
+        assert!(game.contains(&Cell::new(2, 0)));
+        assert!(game.contains(&Cell::new(1, 1)));
+        assert!(game.contains(&Cell::new(0, 2)));
+        assert!(game.contains(&Cell::new(1, 3)));
+        assert!(game.contains(&Cell::new(2, 4)));
+        assert!(game.contains(&Cell::new(3, 3)));
+        assert!(game.contains(&Cell::new(4, 2)));
+        assert!(game.contains(&Cell::new(3, 1)));
     }
 
     #[test]
@@ -171,23 +175,21 @@ mod tests {
         //  x x x        x   x          x x x
         //                 x              x
 
-        let live_cells = game.live_cells.clone();
+        assert_eq!(game.live_cells_amount(), 12);
 
-        assert_eq!(live_cells.len(), 12);
+        assert!(game.contains(&Cell::new(2, 0)));
+        assert!(game.contains(&Cell::new(1, 1)));
+        assert!(game.contains(&Cell::new(0, 2)));
+        assert!(game.contains(&Cell::new(1, 3)));
+        assert!(game.contains(&Cell::new(2, 4)));
+        assert!(game.contains(&Cell::new(3, 3)));
+        assert!(game.contains(&Cell::new(4, 2)));
+        assert!(game.contains(&Cell::new(3, 1)));
 
-        assert!(live_cells.contains(&Cell::new(2, 0)));
-        assert!(live_cells.contains(&Cell::new(1, 1)));
-        assert!(live_cells.contains(&Cell::new(0, 2)));
-        assert!(live_cells.contains(&Cell::new(1, 3)));
-        assert!(live_cells.contains(&Cell::new(2, 4)));
-        assert!(live_cells.contains(&Cell::new(3, 3)));
-        assert!(live_cells.contains(&Cell::new(4, 2)));
-        assert!(live_cells.contains(&Cell::new(3, 1)));
-
-        assert!(live_cells.contains(&Cell::new(2, 1)));
-        assert!(live_cells.contains(&Cell::new(1, 2)));
-        assert!(live_cells.contains(&Cell::new(2, 3)));
-        assert!(live_cells.contains(&Cell::new(3, 2)));
+        assert!(game.contains(&Cell::new(2, 1)));
+        assert!(game.contains(&Cell::new(1, 2)));
+        assert!(game.contains(&Cell::new(2, 3)));
+        assert!(game.contains(&Cell::new(3, 2)));
     }
 
     #[test]
@@ -204,24 +206,22 @@ mod tests {
         //  x x x        x   x          x x x        x       x
         //                 x              x            x x x
 
-        let live_cells = game.live_cells.clone();
+        assert_eq!(game.live_cells_amount(), 12);
 
-        assert_eq!(live_cells.len(), 12);
+        assert!(game.contains(&Cell::new(0, 1)));
+        assert!(game.contains(&Cell::new(0, 2)));
+        assert!(game.contains(&Cell::new(0, 3)));
 
-        assert!(live_cells.contains(&Cell::new(0, 1)));
-        assert!(live_cells.contains(&Cell::new(0, 2)));
-        assert!(live_cells.contains(&Cell::new(0, 3)));
+        assert!(game.contains(&Cell::new(1, 4)));
+        assert!(game.contains(&Cell::new(2, 4)));
+        assert!(game.contains(&Cell::new(3, 4)));
 
-        assert!(live_cells.contains(&Cell::new(1, 4)));
-        assert!(live_cells.contains(&Cell::new(2, 4)));
-        assert!(live_cells.contains(&Cell::new(3, 4)));
+        assert!(game.contains(&Cell::new(4, 3)));
+        assert!(game.contains(&Cell::new(4, 2)));
+        assert!(game.contains(&Cell::new(4, 1)));
 
-        assert!(live_cells.contains(&Cell::new(4, 3)));
-        assert!(live_cells.contains(&Cell::new(4, 2)));
-        assert!(live_cells.contains(&Cell::new(4, 1)));
-
-        assert!(live_cells.contains(&Cell::new(1, 0)));
-        assert!(live_cells.contains(&Cell::new(2, 0)));
-        assert!(live_cells.contains(&Cell::new(3, 0)));
+        assert!(game.contains(&Cell::new(1, 0)));
+        assert!(game.contains(&Cell::new(2, 0)));
+        assert!(game.contains(&Cell::new(3, 0)));
     }
 }
