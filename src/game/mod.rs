@@ -6,25 +6,23 @@ pub struct Game {
     live_cells: Vec<Cell>,
 }
 
-impl Game {
-    pub fn new_with_seed(seed: Vec<(i32,i32)>) -> Self {
-        let live_cells = seed.iter().map(|(x,y)| Cell::new(*x,*y)).collect();
+impl Default for Game {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
-        Game {
-            live_cells
-        }
+impl Game {
+    pub fn new_with_seed(seed: Vec<(i32, i32)>) -> Self {
+        let live_cells = seed.iter().map(|(x, y)| Cell::new(*x, *y)).collect();
+
+        Game { live_cells }
     }
 
     pub fn new() -> Self {
-        let live_cells = vec![
-            Cell::new(1, 3),
-            Cell::new(1, 2),
-            Cell::new(1, 1),
-        ];
+        let live_cells = vec![Cell::new(1, 3), Cell::new(1, 2), Cell::new(1, 1)];
 
-        Game {
-            live_cells
-        }
+        Game { live_cells }
     }
 
     // Create a new_live_live cells vec by populating it with the dead cells that have 3 live neighbours and the current live cells that have 2 or 3 live neighbours
@@ -98,7 +96,6 @@ mod tests {
         assert!(game.contains(&Cell::new(0, 2)));
         assert!(game.contains(&Cell::new(1, 2)));
         assert!(game.contains(&Cell::new(2, 2)));
-
     }
 
     #[test]
@@ -112,7 +109,7 @@ mod tests {
         //  x                  x
         //  x   ->  x x x  ->  x
         //  x                  x
-        
+
         assert_eq!(game.live_cells_amount(), 3);
 
         assert!(game.contains(&Cell::new(1, 1)));
@@ -122,7 +119,19 @@ mod tests {
 
     #[test]
     fn new_more_complex_seed() {
-        let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
+        let mut game = Game::new_with_seed(
+            [
+                (1, 1),
+                (1, 2),
+                (1, 3),
+                (2, 1),
+                (2, 3),
+                (3, 1),
+                (3, 2),
+                (3, 3),
+            ]
+            .to_vec(),
+        );
         game.update_game();
 
         //                 x
@@ -145,7 +154,19 @@ mod tests {
 
     #[test]
     fn complex_seed_second_iteration() {
-        let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
+        let mut game = Game::new_with_seed(
+            [
+                (1, 1),
+                (1, 2),
+                (1, 3),
+                (2, 1),
+                (2, 3),
+                (3, 1),
+                (3, 2),
+                (3, 3),
+            ]
+            .to_vec(),
+        );
 
         game.update_game();
         game.update_game();
@@ -175,7 +196,19 @@ mod tests {
 
     #[test]
     fn complex_seed_third_iteration() {
-        let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
+        let mut game = Game::new_with_seed(
+            [
+                (1, 1),
+                (1, 2),
+                (1, 3),
+                (2, 1),
+                (2, 3),
+                (3, 1),
+                (3, 2),
+                (3, 3),
+            ]
+            .to_vec(),
+        );
 
         game.update_game();
         game.update_game();

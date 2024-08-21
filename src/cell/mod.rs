@@ -1,8 +1,4 @@
-#[derive(Clone)]
-#[derive(Eq)]
-#[derive(PartialEq)]
-#[derive(Hash)]
-#[derive(Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub struct Cell {
     pub x: i32,
     pub y: i32,
@@ -23,7 +19,10 @@ impl Cell {
                     continue;
                 }
 
-                positions.push(Cell { x: self.x + dx, y: self.y + dy });
+                positions.push(Cell {
+                    x: self.x + dx,
+                    y: self.y + dy,
+                });
             }
         }
 
