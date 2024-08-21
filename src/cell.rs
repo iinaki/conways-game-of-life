@@ -6,7 +6,7 @@ pub struct Cell {
 
 impl Cell {
     pub fn new(x: i32, y: i32) -> Self {
-        Cell { x, y }
+        Cell { x, y }   
     }
 
     // Returns the positions of the 8 neighbours of a cell
@@ -28,4 +28,9 @@ impl Cell {
 
         positions
     }
+}
+
+#[derive(Debug)]
+pub enum FailedToCreateCell {
+    InvalidCoordinates(String),
 }

@@ -1,4 +1,4 @@
-# Conways Game of Life, in Rust
+# Conway's Game of Life, in Rust
 
 ### The rules of the game
 - Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
