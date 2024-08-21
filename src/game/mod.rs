@@ -27,31 +27,14 @@ impl Game {
         }
     }
 
-    // Returns the positions of the 8 neighbours of a cell
-    fn neighbour_positions(&self, cell: &Cell) -> Vec<Cell> {
-        let mut positions = Vec::with_capacity(8);
-
-        for dx in -1..=1 {
-            for dy in -1..=1 {
-                if dx == 0 && dy == 0 {
-                    continue;
-                }
-
-                positions.push(Cell { x: cell.x + dx, y: cell.y + dy });
-            }
-        }
-
-        positions
-    }
-
     // Create a new_live_live cells vec by populating it with the dead cells that have 3 live neighbours and the current live cells that have 2 or 3 live neighbours
     fn new_live_cells(&self) -> Vec<Cell> {
         let mut dead_cells_map = HashMap::new();
         let mut neighbours_count = HashMap::new();
 
         for cell in self.live_cells.iter() {
-            for neighbor in self.neighbour_positions(cell) {
-                if !self.live_cells.contains(&neighbor) {
+            for neighbor in cell.neighbour_positions() {
+                if !self.contains(&neighbor) {
                     let counter = dead_cells_map.entry(neighbor).or_insert(0);
                     *counter += 1;
                 } else {
@@ -102,7 +85,7 @@ mod tests {
         println!("LIVE CELLS 0 {:?}", live_cells);
 
         game.update_game();
-        
+
         let live_cells = game.live_cells.clone();
         println!("LIVE CELLS 1 {:?}", live_cells);
 
