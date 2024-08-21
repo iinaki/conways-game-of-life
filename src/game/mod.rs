@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use crate::conways_error::ConwaysError;
 use crate::cell::Cell;
 
 pub struct Game {
@@ -46,7 +45,7 @@ impl Game {
     }
 
     // Create a new_live_live cells vec by populating it with the dead cells that have 3 live neighbours and the current live cells that have 2 or 3 live neighbours
-    pub fn new_live_cells(&self) -> Vec<Cell> {
+    fn new_live_cells(&self) -> Vec<Cell> {
         let mut dead_cells_map = HashMap::new();
         let mut neighbours_count = HashMap::new();
 
@@ -78,10 +77,8 @@ impl Game {
         new_live_cells
     }
 
-    pub fn update_game(&mut self) -> Result<(), ConwaysError> {
+    pub fn update_game(&mut self) {
         self.live_cells = self.new_live_cells();
-
-        Ok(())
     }
 
     pub fn contains(&self, cell: &Cell) -> bool {
@@ -104,7 +101,8 @@ mod tests {
         let live_cells = game.live_cells.clone();
         println!("LIVE CELLS 0 {:?}", live_cells);
 
-        let _result = game.update_game();
+        game.update_game();
+        
         let live_cells = game.live_cells.clone();
         println!("LIVE CELLS 1 {:?}", live_cells);
 
@@ -124,9 +122,9 @@ mod tests {
     fn second_iteration_should_return_to_original_state() {
         let mut game = Game::new();
 
-        let _result = game.update_game();
+        game.update_game();
 
-        let _result = game.update_game();
+        game.update_game();
 
         //  x                  x
         //  x   ->  x x x  ->  x
@@ -142,7 +140,7 @@ mod tests {
     #[test]
     fn new_more_complex_seed() {
         let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
-        let _ = game.update_game();
+        game.update_game();
 
         //                 x
         //  x x x        x   x
@@ -166,8 +164,8 @@ mod tests {
     fn complex_seed_second_iteration() {
         let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
 
-        let _ = game.update_game();
-        let _ = game.update_game();
+        game.update_game();
+        game.update_game();
 
         //                 x              x
         //  x x x        x   x          x x x
@@ -196,9 +194,9 @@ mod tests {
     fn complex_seed_third_iteration() {
         let mut game = Game::new_with_seed([(1,1),(1,2),(1,3),(2,1),(2,3),(3,1),(3,2),(3,3)].to_vec());
 
-        let _ = game.update_game();
-        let _ = game.update_game();
-        let _ = game.update_game();
+        game.update_game();
+        game.update_game();
+        game.update_game();
 
         //                 x              x            x x x
         //  x x x        x   x          x x x        x       x
