@@ -38,6 +38,7 @@ impl Game {
     /// # Returns
     ///
     /// A vector of `Cell` objects representing the next generation of live cells.
+    /// 
     fn new_live_cells(&self) -> Vec<Cell> {
         let mut dead_cells_map = HashMap::new();
         let mut neighbours_count = HashMap::new();
@@ -75,6 +76,7 @@ impl Game {
     /// # Returns
     ///
     /// A vector of tuples with the coordinates of the live cells.
+    /// 
     pub fn live_cells(&self) -> Vec<(i32, i32)> {
         self.live_cells.iter().map(|cell| cell.position()).collect()
     }

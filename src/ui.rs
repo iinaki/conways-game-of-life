@@ -25,6 +25,17 @@ const DEFAULT_SEED: [(i32, i32); 8] = [
     (16, 15),
 ];
 
+/// This function displays the user interface for the Game of Life, including rendering the game screen,
+/// handling user input, and switching between different modes (playing, paused, edit).
+///
+/// # Parameters
+///
+/// - `game`: The current game state.
+/// - `game_running`: A flag indicating whether the game is running.
+/// - `game_paused`: A flag indicating whether the game is paused.
+/// - `edit_mode`: A flag indicating whether the game is in edit mode.
+/// - `generations_passed`: The number of generations that have passed in the game.
+///
 async fn display_ui(
     game: &mut Game,
     game_running: &mut bool,
@@ -49,6 +60,13 @@ async fn display_ui(
     next_frame().await;
 }
 
+/// Renders the game screen with grid lines and the live cells.
+///
+/// # Parameters
+///
+/// - `game`: The current game state.
+/// - `generations_passed`: The number of generations that have passed in the game.
+///
 fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
     clear_background(LIGHTGRAY);
     let screen_width = screen_width();
@@ -105,6 +123,7 @@ fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
     (offset_x, offset_y, sq_size)
 }
 
+/// Handles the edit mode where users can add or remove cells.
 fn run_edit_mode(game: &mut Game, offset_x: &f32, offset_y: &f32, sq_size: &f32) {
     show_edit_hud();
 
@@ -124,6 +143,7 @@ fn run_edit_mode(game: &mut Game, offset_x: &f32, offset_y: &f32, sq_size: &f32)
     }
 }
 
+/// Displays the HUD for edit mode, showing instructions to the user.
 fn show_edit_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
@@ -158,10 +178,12 @@ fn show_edit_hud() {
     );
 }
 
+/// Runs the game in paused mode, displaying the pause HUD.
 fn run_paused_mode() {
     show_pause_hud();
 }
 
+/// Displays the HUD for paused mode, showing instructions for the user.    
 fn show_pause_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
@@ -196,6 +218,7 @@ fn show_pause_hud() {
     );
 }
 
+/// Runs the game in playing mode, where time passes and the game is updated.
 fn run_playing_mode(game: &mut Game, generations_passed: &mut i32) {
     sleep(Duration::from_secs(1));
     game.update_game();
@@ -204,6 +227,7 @@ fn run_playing_mode(game: &mut Game, generations_passed: &mut i32) {
     *generations_passed += 1;
 }
 
+/// Displays the HUD for playing mode, showing instructions for the user.
 fn show_playing_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
@@ -238,6 +262,7 @@ fn show_playing_hud() {
     );
 }
 
+/// Handles users commands.
 fn handle_commands(game: &mut Game, game_running: &mut bool, game_paused: &mut bool, edit_mode: &mut bool) {
     if is_key_pressed(KeyCode::X) {
         *game_running = !*game_running;
@@ -261,11 +286,12 @@ fn handle_commands(game: &mut Game, game_running: &mut bool, game_paused: &mut b
     }
 }
 
+/// Restarts the game with a random seed. The amount of cells and their positions are randomly generated.
 fn restart_game_with_random_seed(game: &mut Game) {
     let mut rng = ::rand::thread_rng();
     
     let num_cells = rng.gen_range(1..=(SQUARES * SQUARES) as usize);
-    
+
     let mut seed = Vec::with_capacity(num_cells);
 
     for _ in 0..num_cells {
@@ -277,7 +303,12 @@ fn restart_game_with_random_seed(game: &mut Game) {
     *game = Game::new_with_seed(seed);
 }
 
-// Runs the UI by creating a new instance of the Game of Life
+/// Runs the user interface of the Game of Life.
+/// 
+/// Creates a new instance of the game with a default seed
+/// and manages the game loop. Handles user input and updates the game state
+/// based on user interactions.
+/// 
 pub async fn run_ui() {
     let mut game = Game::new_with_seed(DEFAULT_SEED.to_vec());
 
