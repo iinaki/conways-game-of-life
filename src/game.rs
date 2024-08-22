@@ -20,7 +20,7 @@ impl Game {
 
         for cell in self.live_cells.iter() {
             for neighbor in cell.neighbour_positions() {
-                if !self.contains(&neighbor) {
+                if !self.live_cells.contains(&neighbor) {
                     let counter = dead_cells_map.entry(neighbor).or_insert(0);
                     *counter += 1;
                 } else {
@@ -54,12 +54,8 @@ impl Game {
         self.live_cells = self.new_live_cells();
     }
 
-    pub fn contains(&self, cell: &Cell) -> bool {
-        self.live_cells.contains(cell)
-    }
-
     pub fn is_cell_alive(&self, x: i32, y: i32) -> bool {
-        self.contains(&Cell::new(x, y))
+        self.live_cells.contains(&Cell::new(x, y))
     }
 
     pub fn remove_cell(&mut self, x: i32, y: i32) {
@@ -93,9 +89,9 @@ mod tests {
 
         assert_eq!(game.live_cells.len(), 3);
 
-        assert!(game.contains(&Cell::new(0, 2)));
-        assert!(game.contains(&Cell::new(1, 2)));
-        assert!(game.contains(&Cell::new(2, 2)));
+        assert!(game.is_cell_alive(0, 2));
+        assert!(game.is_cell_alive(1, 2));
+        assert!(game.is_cell_alive(2, 2));
     }
 
     #[test]
@@ -112,9 +108,9 @@ mod tests {
 
         assert_eq!(game.live_cells.len(), 3);
 
-        assert!(game.contains(&Cell::new(1, 1)));
-        assert!(game.contains(&Cell::new(1, 2)));
-        assert!(game.contains(&Cell::new(1, 3)));
+        assert!(game.is_cell_alive(1, 1));
+        assert!(game.is_cell_alive(1, 2));
+        assert!(game.is_cell_alive(1, 3));
     }
 
     #[test]
@@ -142,14 +138,14 @@ mod tests {
 
         assert_eq!(game.live_cells.len(), 8);
 
-        assert!(game.contains(&Cell::new(2, 0)));
-        assert!(game.contains(&Cell::new(1, 1)));
-        assert!(game.contains(&Cell::new(0, 2)));
-        assert!(game.contains(&Cell::new(1, 3)));
-        assert!(game.contains(&Cell::new(2, 4)));
-        assert!(game.contains(&Cell::new(3, 3)));
-        assert!(game.contains(&Cell::new(4, 2)));
-        assert!(game.contains(&Cell::new(3, 1)));
+        assert!(game.is_cell_alive(2, 0));
+        assert!(game.is_cell_alive(1, 1));
+        assert!(game.is_cell_alive(0, 2));
+        assert!(game.is_cell_alive(1, 3));
+        assert!(game.is_cell_alive(2, 4));
+        assert!(game.is_cell_alive(3, 3));
+        assert!(game.is_cell_alive(4, 2));
+        assert!(game.is_cell_alive(3, 1));
     }
 
     #[test]
@@ -179,19 +175,19 @@ mod tests {
 
         assert_eq!(game.live_cells.len(), 12);
 
-        assert!(game.contains(&Cell::new(2, 0)));
-        assert!(game.contains(&Cell::new(1, 1)));
-        assert!(game.contains(&Cell::new(0, 2)));
-        assert!(game.contains(&Cell::new(1, 3)));
-        assert!(game.contains(&Cell::new(2, 4)));
-        assert!(game.contains(&Cell::new(3, 3)));
-        assert!(game.contains(&Cell::new(4, 2)));
-        assert!(game.contains(&Cell::new(3, 1)));
+        assert!(game.is_cell_alive(2, 0));
+        assert!(game.is_cell_alive(1, 1));
+        assert!(game.is_cell_alive(0, 2));
+        assert!(game.is_cell_alive(1, 3));
+        assert!(game.is_cell_alive(2, 4));
+        assert!(game.is_cell_alive(3, 3));
+        assert!(game.is_cell_alive(4, 2));
+        assert!(game.is_cell_alive(3, 1));
 
-        assert!(game.contains(&Cell::new(2, 1)));
-        assert!(game.contains(&Cell::new(1, 2)));
-        assert!(game.contains(&Cell::new(2, 3)));
-        assert!(game.contains(&Cell::new(3, 2)));
+        assert!(game.is_cell_alive(2, 1));
+        assert!(game.is_cell_alive(1, 2));
+        assert!(game.is_cell_alive(2, 3));
+        assert!(game.is_cell_alive(3, 2));
     }
 
     #[test]
@@ -222,20 +218,20 @@ mod tests {
 
         assert_eq!(game.live_cells.len(), 12);
 
-        assert!(game.contains(&Cell::new(0, 1)));
-        assert!(game.contains(&Cell::new(0, 2)));
-        assert!(game.contains(&Cell::new(0, 3)));
+        assert!(game.is_cell_alive(0, 1));
+        assert!(game.is_cell_alive(0, 2));
+        assert!(game.is_cell_alive(0, 3));
 
-        assert!(game.contains(&Cell::new(1, 4)));
-        assert!(game.contains(&Cell::new(2, 4)));
-        assert!(game.contains(&Cell::new(3, 4)));
+        assert!(game.is_cell_alive(1, 4));
+        assert!(game.is_cell_alive(2, 4));
+        assert!(game.is_cell_alive(3, 4));
 
-        assert!(game.contains(&Cell::new(4, 3)));
-        assert!(game.contains(&Cell::new(4, 2)));
-        assert!(game.contains(&Cell::new(4, 1)));
+        assert!(game.is_cell_alive(4, 3));
+        assert!(game.is_cell_alive(4, 2));
+        assert!(game.is_cell_alive(4, 1));
 
-        assert!(game.contains(&Cell::new(1, 0)));
-        assert!(game.contains(&Cell::new(2, 0)));
-        assert!(game.contains(&Cell::new(3, 0)));
+        assert!(game.is_cell_alive(1, 0));
+        assert!(game.is_cell_alive(2, 0));
+        assert!(game.is_cell_alive(3, 0));
     }
 }

@@ -6,11 +6,8 @@ use std::{thread::sleep, time::Duration};
 
 const SQUARES: i16 = 32;
 
-
 #[macroquad::main("Conway's Game of Life")]
 async fn main() {
-    //let mut game = Game::new_with_seed(vec![(1, 3), (1, 2), (1, 1)]);
-
     let mut game = Game::new_with_seed(
         [
             (6, 6),
@@ -78,16 +75,26 @@ async fn main() {
             if edit_mode {
                 draw_text("Edit Mode", 300., 30., 40., BLACK);
                 draw_text("Click on a live cell to kill it", 140., 550., 25., BLACK);
-                draw_text("Click on a dead cell to make it alive", 140., 565., 25., BLACK);
+                draw_text(
+                    "Click on a dead cell to make it alive",
+                    140.,
+                    565.,
+                    25.,
+                    BLACK,
+                );
                 draw_text("Press E to exit Edit Mode", 140., 580., 25., BLACK);
 
                 if is_mouse_button_pressed(MouseButton::Left) {
                     let (mouse_x, mouse_y) = mouse_position();
-    
+
                     let grid_x = ((mouse_x - offset_x) / sq_size).floor() as i32;
                     let grid_y = ((mouse_y - offset_y) / sq_size).floor() as i32;
-    
-                    if grid_x >= 0 && grid_x < SQUARES as i32 && grid_y >= 0 && grid_y < SQUARES as i32 {
+
+                    if grid_x >= 0
+                        && grid_x < SQUARES as i32
+                        && grid_y >= 0
+                        && grid_y < SQUARES as i32
+                    {
                         if game.is_cell_alive(grid_x, grid_y) {
                             game.remove_cell(grid_x, grid_y);
                         } else {
