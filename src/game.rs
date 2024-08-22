@@ -2,18 +2,42 @@ use std::collections::HashMap;
 
 use crate::cell::Cell;
 
+/// Represents the state of Conway's Game of Life. Updates the game state based on the four rules of the game. 
 pub struct Game {
     live_cells: Vec<Cell>,
 }
 
 impl Game {
+    /// Creates a new `Game` instance with a given seed. Each tuple represents the coordinates of a live cell.
+    ///
+    /// # Parameters
+    ///
+    /// - `seed`: A vector of tuples where each tuple contains the coordinates of a live cell.
+    ///
+    /// # Returns
+    ///
+    /// A new `Game` instance with cells initialized from the `seed`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let seed = vec![(0, 0), (1, 0), (0, 1), (1, 1)];
+    /// let game = Game::new_with_seed(seed);
+    /// ```
     pub fn new_with_seed(seed: Vec<(i32, i32)>) -> Self {
         let live_cells = seed.into_iter().map(|(x, y)| Cell::new(x, y)).collect();
 
         Game { live_cells }
     }
 
-    // Create a new_live_live cells vec by populating it with the dead cells that have 3 live neighbours and the current live cells that have 2 or 3 live neighbours
+    /// Calculates the next generation of live cells based on Conway's rules.
+    ///
+    /// It identifies dead cells that have exactly 3 live neighbors and then
+    /// identifies current live cells that have 2 or 3 live neighbors.
+    ///
+    /// # Returns
+    ///
+    /// A vector of `Cell` objects representing the next generation of live cells.
     fn new_live_cells(&self) -> Vec<Cell> {
         let mut dead_cells_map = HashMap::new();
         let mut neighbours_count = HashMap::new();
@@ -46,22 +70,39 @@ impl Game {
         new_live_cells
     }
 
+    /// Retrieves the coordinates of all live cells.
+    /// 
+    /// # Returns
+    ///
+    /// A vector of tuples with the coordinates of the live cells.
     pub fn live_cells(&self) -> Vec<(i32, i32)> {
         self.live_cells.iter().map(|cell| cell.position()).collect()
     }
 
+    /// Updates the game to the next generation.
+    /// 
+    /// # Examples
+    ///
+    /// ```
+    /// let seed = vec![(0, 0), (1, 0), (0, 1), (1, 1)];
+    /// let mut game = Game::new_with_seed(seed);
+    /// game.update_game();
+    /// ```
     pub fn update_game(&mut self) {
         self.live_cells = self.new_live_cells();
     }
 
+    /// Checks if a cell with the given coordinates is alive.
     pub fn is_cell_alive(&self, x: i32, y: i32) -> bool {
         self.live_cells.contains(&Cell::new(x, y))
     }
 
+    /// Removes a cell from the game.
     pub fn remove_cell(&mut self, x: i32, y: i32) {
         self.live_cells.retain(|cell| cell.position() != (x, y));
     }
 
+    /// Adds a new cell to the game.
     pub fn add_cell(&mut self, x: i32, y: i32) {
         self.live_cells.push(Cell::new(x, y));
     }
