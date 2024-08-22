@@ -127,15 +127,34 @@ fn show_edit_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
 
-    draw_text("Edit Mode", screen_width * TITLE_POS_X, screen_height * TITLE_POS_Y, TITLE_SIZE, BLACK);
-    draw_text("Click on a live cell to kill it", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y - 15., TEXT_SIZE, BLACK);
     draw_text(
-        "Click on a dead cell to make it alive",
-        screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y,
+        "Edit Mode",
+        screen_width * TITLE_POS_X,
+        screen_height * TITLE_POS_Y,
+        TITLE_SIZE,
+        BLACK,
+    );
+    draw_text(
+        "Click on a live cell to kill it",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y - 15.,
         TEXT_SIZE,
         BLACK,
     );
-    draw_text("Press E to exit Edit Mode", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y + 15., TEXT_SIZE, BLACK);
+    draw_text(
+        "Click on a dead cell to make it alive",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y,
+        TEXT_SIZE,
+        BLACK,
+    );
+    draw_text(
+        "Press E to exit Edit Mode",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y + 15.,
+        TEXT_SIZE,
+        BLACK,
+    );
 }
 
 fn run_paused_mode() {
@@ -146,9 +165,27 @@ fn show_pause_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
 
-    draw_text("Game Paused", screen_width * TITLE_POS_X, screen_height * TITLE_POS_Y, TITLE_SIZE, BLACK);
-    draw_text("Press E to enter Edit Mode", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y, TEXT_SIZE, BLACK);
-    draw_text("Press X to exit the game", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y + 15., TEXT_SIZE, BLACK);
+    draw_text(
+        "Game Paused",
+        screen_width * TITLE_POS_X,
+        screen_height * TITLE_POS_Y,
+        TITLE_SIZE,
+        BLACK,
+    );
+    draw_text(
+        "Press E to enter Edit Mode",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y,
+        TEXT_SIZE,
+        BLACK,
+    );
+    draw_text(
+        "Press X to exit the game",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y + 15.,
+        TEXT_SIZE,
+        BLACK,
+    );
 }
 
 fn run_playing_mode(game: &mut Game, generations_passed: &mut i32) {
@@ -163,9 +200,27 @@ fn show_playing_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
 
-    draw_text("Conway's Game of Life", screen_width * TITLE_POS_X, screen_height * TITLE_POS_Y, TITLE_SIZE, BLACK);
-    draw_text("Press SPACE to pause", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y, TEXT_SIZE, BLACK);
-    draw_text("Press X to exit the game", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y + 15., TEXT_SIZE, BLACK);
+    draw_text(
+        "Conway's Game of Life",
+        screen_width * TITLE_POS_X,
+        screen_height * TITLE_POS_Y,
+        TITLE_SIZE,
+        BLACK,
+    );
+    draw_text(
+        "Press SPACE to pause",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y,
+        TEXT_SIZE,
+        BLACK,
+    );
+    draw_text(
+        "Press X to exit the game",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y + 15.,
+        TEXT_SIZE,
+        BLACK,
+    );
 }
 
 fn handle_commands(game_running: &mut bool, game_paused: &mut bool, edit_mode: &mut bool) {
