@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::cell::Cell;
 
-/// Represents the state of Conway's Game of Life. Updates the game state based on the four rules of the game. 
+/// Represents the state of Conway's Game of Life. Updates the game state based on the four rules of the game.
 pub struct Game {
     live_cells: Vec<Cell>,
 }
@@ -18,12 +18,6 @@ impl Game {
     ///
     /// A new `Game` instance with cells initialized from the `seed`.
     ///
-    /// # Examples
-    ///
-    /// ```
-    /// let seed = vec![(0, 0), (1, 0), (0, 1), (1, 1)];
-    /// let game = Game::new_with_seed(seed);
-    /// ```
     pub fn new_with_seed(seed: Vec<(i32, i32)>) -> Self {
         let live_cells = seed.into_iter().map(|(x, y)| Cell::new(x, y)).collect();
 
@@ -38,7 +32,7 @@ impl Game {
     /// # Returns
     ///
     /// A vector of `Cell` objects representing the next generation of live cells.
-    /// 
+    ///
     fn new_live_cells(&self) -> Vec<Cell> {
         let mut dead_cells_map = HashMap::new();
         let mut neighbours_count = HashMap::new();
@@ -72,24 +66,16 @@ impl Game {
     }
 
     /// Retrieves the coordinates of all live cells.
-    /// 
+    ///
     /// # Returns
     ///
     /// A vector of tuples with the coordinates of the live cells.
-    /// 
+    ///
     pub fn live_cells(&self) -> Vec<(i32, i32)> {
         self.live_cells.iter().map(|cell| cell.position()).collect()
     }
 
     /// Updates the game to the next generation.
-    /// 
-    /// # Examples
-    ///
-    /// ```
-    /// let seed = vec![(0, 0), (1, 0), (0, 1), (1, 1)];
-    /// let mut game = Game::new_with_seed(seed);
-    /// game.update_game();
-    /// ```
     pub fn update_game(&mut self) {
         self.live_cells = self.new_live_cells();
     }

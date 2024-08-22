@@ -1,7 +1,7 @@
 use crate::game::Game;
 
-use macroquad::prelude::*;
 use ::rand::Rng;
+use macroquad::prelude::*;
 
 use std::{thread::sleep, time::Duration};
 
@@ -263,7 +263,12 @@ fn show_playing_hud() {
 }
 
 /// Handles users commands.
-fn handle_commands(game: &mut Game, game_running: &mut bool, game_paused: &mut bool, edit_mode: &mut bool) {
+fn handle_commands(
+    game: &mut Game,
+    game_running: &mut bool,
+    game_paused: &mut bool,
+    edit_mode: &mut bool,
+) {
     if is_key_pressed(KeyCode::X) {
         *game_running = !*game_running;
     }
@@ -289,7 +294,7 @@ fn handle_commands(game: &mut Game, game_running: &mut bool, game_paused: &mut b
 /// Restarts the game with a random seed. The amount of cells and their positions are randomly generated.
 fn restart_game_with_random_seed(game: &mut Game) {
     let mut rng = ::rand::thread_rng();
-    
+
     let num_cells = rng.gen_range(1..=(SQUARES * SQUARES) as usize);
 
     let mut seed = Vec::with_capacity(num_cells);
@@ -304,11 +309,11 @@ fn restart_game_with_random_seed(game: &mut Game) {
 }
 
 /// Runs the user interface of the Game of Life.
-/// 
+///
 /// Creates a new instance of the game with a default seed
 /// and manages the game loop. Handles user input and updates the game state
 /// based on user interactions.
-/// 
+///
 pub async fn run_ui() {
     let mut game = Game::new_with_seed(DEFAULT_SEED.to_vec());
 
