@@ -1,6 +1,7 @@
 use crate::game::Game;
 
 use macroquad::prelude::*;
+use ::rand::Rng;
 
 use std::{thread::sleep, time::Duration};
 
@@ -43,7 +44,7 @@ async fn display_ui(
         run_playing_mode(game, generations_passed);
     }
 
-    handle_commands(game_running, game_paused, edit_mode);
+    handle_commands(game, game_running, game_paused, edit_mode);
 
     next_frame().await;
 }
@@ -186,6 +187,13 @@ fn show_pause_hud() {
         TEXT_SIZE,
         BLACK,
     );
+    draw_text(
+        "Press R to restart the game with a random seed",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y + 30.,
+        TEXT_SIZE,
+        BLACK,
+    );
 }
 
 fn run_playing_mode(game: &mut Game, generations_passed: &mut i32) {
@@ -221,9 +229,16 @@ fn show_playing_hud() {
         TEXT_SIZE,
         BLACK,
     );
+    draw_text(
+        "Press R to restart the game with a random seed",
+        screen_width * TEXT_POS_X,
+        screen_height * TEXT_POS_Y + 30.,
+        TEXT_SIZE,
+        BLACK,
+    );
 }
 
-fn handle_commands(game_running: &mut bool, game_paused: &mut bool, edit_mode: &mut bool) {
+fn handle_commands(game: &mut Game, game_running: &mut bool, game_paused: &mut bool, edit_mode: &mut bool) {
     if is_key_pressed(KeyCode::X) {
         *game_running = !*game_running;
     }
@@ -240,6 +255,26 @@ fn handle_commands(game_running: &mut bool, game_paused: &mut bool, edit_mode: &
             *edit_mode = !*edit_mode;
         }
     }
+
+    if is_key_pressed(KeyCode::R) {
+        restart_game_with_random_seed(game);
+    }
+}
+
+fn restart_game_with_random_seed(game: &mut Game) {
+    let mut rng = ::rand::thread_rng();
+    
+    let num_cells = rng.gen_range(1..=(SQUARES * SQUARES) as usize);
+    
+    let mut seed = Vec::with_capacity(num_cells);
+
+    for _ in 0..num_cells {
+        let x = rng.gen_range(0..SQUARES) as i32;
+        let y = rng.gen_range(0..SQUARES) as i32;
+        seed.push((x, y));
+    }
+
+    *game = Game::new_with_seed(seed);
 }
 
 // Runs the UI by creating a new instance of the Game of Life
