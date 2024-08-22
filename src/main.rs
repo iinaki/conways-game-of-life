@@ -4,7 +4,7 @@ use macroquad::prelude::*;
 
 use std::{collections::LinkedList, thread::sleep, time::Duration};
 
-const SQUARES: i16 = 16;
+const SQUARES: i16 = 32;
 
 
 #[macroquad::main("Conway's Game of Life")]
@@ -25,55 +25,61 @@ async fn main() {
         .to_vec(),
     );
 
-    let mut game_over = false;
+    let mut game_paused = false;
 
     loop {
-        if !game_over {
-            clear_background(LIGHTGRAY);
+        clear_background(LIGHTGRAY);
 
-            let game_size = screen_width().min(screen_height());
-            let offset_x = (screen_width() - game_size) / 2. + 10.;
-            let offset_y = (screen_height() - game_size) / 2. + 10.;
-            let sq_size = (screen_height() - offset_y * 2.) / SQUARES as f32;
+        let game_size = screen_width().min(screen_height());
+        let offset_x = (screen_width() - game_size) / 2. + 10.;
+        let offset_y = (screen_height() - game_size) / 2. + 10.;
+        let sq_size = (screen_height() - offset_y * 2.) / SQUARES as f32;
 
-            draw_rectangle(offset_x, offset_y, game_size - 20., game_size - 20., WHITE);
+        draw_rectangle(offset_x, offset_y, game_size - 20., game_size - 20., WHITE);
 
-            for i in 1..SQUARES {
-                draw_line(
-                    offset_x,
-                    offset_y + sq_size * i as f32,
-                    screen_width() - offset_x,
-                    offset_y + sq_size * i as f32,
-                    2.,
-                    LIGHTGRAY,
-                );
-            }
-
-            for i in 1..SQUARES {
-                draw_line(
-                    offset_x + sq_size * i as f32,
-                    offset_y,
-                    offset_x + sq_size * i as f32,
-                    screen_height() - offset_y,
-                    2.,
-                    LIGHTGRAY,
-                );
-            }
-
-            for (x, y) in game.live_cells() {
-                draw_rectangle(
-                    offset_x + x as f32 * sq_size,
-                    offset_y + y as f32 * sq_size,
-                    sq_size,
-                    sq_size,
-                    GRAY,
-                );
-            }
+        for i in 1..SQUARES {
+            draw_line(
+                offset_x,
+                offset_y + sq_size * i as f32,
+                screen_width() - offset_x,
+                offset_y + sq_size * i as f32,
+                2.,
+                LIGHTGRAY,
+            );
         }
-        
-        sleep(Duration::from_secs(2));
 
-        game.update_game();
+        for i in 1..SQUARES {
+            draw_line(
+                offset_x + sq_size * i as f32,
+                offset_y,
+                offset_x + sq_size * i as f32,
+                screen_height() - offset_y,
+                2.,
+                LIGHTGRAY,
+            );
+        }
+
+        for (x, y) in game.live_cells() {
+            draw_rectangle(
+                offset_x + x as f32 * sq_size,
+                offset_y + y as f32 * sq_size,
+                sq_size,
+                sq_size,
+                GRAY,
+            );
+        }
+
+        if !game_paused {
+            sleep(Duration::from_secs(1));
+            game.update_game();
+        } else {
+            draw_text("Game Paused", 300., 30., 40., BLACK);
+        }
+
+        if is_key_pressed(KeyCode::Space) {
+            game_paused = !game_paused;
+        }
+
         next_frame().await;
     }
 }
