@@ -21,8 +21,9 @@ async fn display_ui(
     game_running: &mut bool,
     game_paused: &mut bool,
     edit_mode: &mut bool,
+    generations_passed: &mut i32,
 ) {
-    let (offset_x, offset_y, sq_size) = render_screen(game);
+    let (offset_x, offset_y, sq_size) = render_screen(game, generations_passed);
 
     if *game_paused {
         if *edit_mode {
@@ -36,10 +37,12 @@ async fn display_ui(
 
     handle_commands(game_running, game_paused, edit_mode);
 
+    *generations_passed += 1;
+
     next_frame().await;
 }
 
-fn render_screen(game: &Game) -> (f32, f32, f32) {
+fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
     clear_background(LIGHTGRAY);
 
     let game_size = screen_width().min(screen_height());
@@ -80,6 +83,15 @@ fn render_screen(game: &Game) -> (f32, f32, f32) {
             GRAY,
         );
     }
+
+    let text = format!("Generations: {}", generations_passed);
+    draw_text(
+        &text,
+        110.,
+        70.,
+        25.,
+        BLACK,
+    );
 
     (offset_x, offset_y, sq_size)
 }
@@ -165,6 +177,7 @@ pub async fn run_ui() {
     let mut game_running = true;
     let mut game_paused = false;
     let mut edit_mode = false;
+    let mut generations_passed = 0;
 
     while game_running {
         display_ui(
@@ -172,6 +185,7 @@ pub async fn run_ui() {
             &mut game_running,
             &mut game_paused,
             &mut edit_mode,
+            &mut generations_passed,
         )
         .await;
     }
