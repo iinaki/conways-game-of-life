@@ -57,6 +57,18 @@ impl Game {
     pub fn contains(&self, cell: &Cell) -> bool {
         self.live_cells.contains(cell)
     }
+
+    pub fn is_cell_alive(&self, x: i32, y: i32) -> bool {
+        self.contains(&Cell::new(x, y))
+    }
+
+    pub fn remove_cell(&mut self, x: i32, y: i32) {
+        self.live_cells.retain(|cell| cell.position() != (x, y));
+    }
+
+    pub fn add_cell(&mut self, x: i32, y: i32) {
+        self.live_cells.push(Cell::new(x, y));
+    }
 }
 
 #[cfg(test)]
