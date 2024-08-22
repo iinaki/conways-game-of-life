@@ -5,6 +5,14 @@ use macroquad::prelude::*;
 use std::{thread::sleep, time::Duration};
 
 const SQUARES: i16 = 32;
+const TEXT_SIZE: f32 = 25.;
+const TEXT_POS_X: f32 = 0.2;
+const TEXT_POS_Y: f32 = 0.9;
+const TITLE_SIZE: f32 = 40.;
+const TITLE_POS_X: f32 = 0.3;
+const TITLE_POS_Y: f32 = 0.05;
+const GENERATIONS_POS_X: f32 = 0.1;
+const GENERATIONS_POS_Y: f32 = 0.1;
 const DEFAULT_SEED: [(i32, i32); 8] = [
     (14, 13),
     (14, 14),
@@ -32,23 +40,23 @@ async fn display_ui(
             run_paused_mode();
         }
     } else {
-        run_playing_mode(game);
+        run_playing_mode(game, generations_passed);
     }
 
     handle_commands(game_running, game_paused, edit_mode);
-
-    *generations_passed += 1;
 
     next_frame().await;
 }
 
 fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
     clear_background(LIGHTGRAY);
+    let screen_width = screen_width();
+    let screen_height = screen_height();
 
-    let game_size = screen_width().min(screen_height());
-    let offset_x = (screen_width() - game_size) / 2. + 10.;
-    let offset_y = (screen_height() - game_size) / 2. + 10.;
-    let sq_size = (screen_height() - offset_y * 2.) / SQUARES as f32;
+    let game_size = screen_width.min(screen_height);
+    let offset_x = (screen_width - game_size) / 2. + 10.;
+    let offset_y = (screen_height - game_size) / 2. + 10.;
+    let sq_size = (screen_height - offset_y * 2.) / SQUARES as f32;
 
     draw_rectangle(offset_x, offset_y, game_size - 20., game_size - 20., WHITE);
 
@@ -56,7 +64,7 @@ fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
         draw_line(
             offset_x,
             offset_y + sq_size * i as f32,
-            screen_width() - offset_x,
+            screen_width - offset_x,
             offset_y + sq_size * i as f32,
             2.,
             LIGHTGRAY,
@@ -68,7 +76,7 @@ fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
             offset_x + sq_size * i as f32,
             offset_y,
             offset_x + sq_size * i as f32,
-            screen_height() - offset_y,
+            screen_height - offset_y,
             2.,
             LIGHTGRAY,
         );
@@ -87,9 +95,9 @@ fn render_screen(game: &Game, generations_passed: &i32) -> (f32, f32, f32) {
     let text = format!("Generations: {}", generations_passed);
     draw_text(
         &text,
-        110.,
-        70.,
-        25.,
+        screen_width * GENERATIONS_POS_X,
+        screen_height * GENERATIONS_POS_Y,
+        TEXT_SIZE,
         BLACK,
     );
 
@@ -116,16 +124,18 @@ fn run_edit_mode(game: &mut Game, offset_x: &f32, offset_y: &f32, sq_size: &f32)
 }
 
 fn show_edit_hud() {
-    draw_text("Edit Mode", 300., 30., 40., BLACK);
-    draw_text("Click on a live cell to kill it", 140., 550., 25., BLACK);
+    let screen_width = screen_width();
+    let screen_height = screen_height();
+
+    draw_text("Edit Mode", screen_width * TITLE_POS_X, screen_height * TITLE_POS_Y, TITLE_SIZE, BLACK);
+    draw_text("Click on a live cell to kill it", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y - 15., TEXT_SIZE, BLACK);
     draw_text(
         "Click on a dead cell to make it alive",
-        140.,
-        565.,
-        25.,
+        screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y,
+        TEXT_SIZE,
         BLACK,
     );
-    draw_text("Press E to exit Edit Mode", 140., 580., 25., BLACK);
+    draw_text("Press E to exit Edit Mode", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y + 15., TEXT_SIZE, BLACK);
 }
 
 fn run_paused_mode() {
@@ -133,22 +143,29 @@ fn run_paused_mode() {
 }
 
 fn show_pause_hud() {
-    draw_text("Game Paused", 300., 30., 40., BLACK);
-    draw_text("Press E to enter Edit Mode", 140., 565., 25., BLACK);
-    draw_text("Press X to exit the game", 140., 580., 25., BLACK);
+    let screen_width = screen_width();
+    let screen_height = screen_height();
+
+    draw_text("Game Paused", screen_width * TITLE_POS_X, screen_height * TITLE_POS_Y, TITLE_SIZE, BLACK);
+    draw_text("Press E to enter Edit Mode", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y, TEXT_SIZE, BLACK);
+    draw_text("Press X to exit the game", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y + 15., TEXT_SIZE, BLACK);
 }
 
-fn run_playing_mode(game: &mut Game) {
+fn run_playing_mode(game: &mut Game, generations_passed: &mut i32) {
     sleep(Duration::from_secs(1));
     game.update_game();
 
     show_playing_hud();
+    *generations_passed += 1;
 }
 
 fn show_playing_hud() {
-    draw_text("Conway's Game of Life", 220., 30., 40., BLACK);
-    draw_text("Press SPACE to pause", 140., 565., 25., BLACK);
-    draw_text("Press X to exit the game", 140., 580., 25., BLACK);
+    let screen_width = screen_width();
+    let screen_height = screen_height();
+
+    draw_text("Conway's Game of Life", screen_width * TITLE_POS_X, screen_height * TITLE_POS_Y, TITLE_SIZE, BLACK);
+    draw_text("Press SPACE to pause", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y, TEXT_SIZE, BLACK);
+    draw_text("Press X to exit the game", screen_width * TEXT_POS_X, screen_height * TEXT_POS_Y + 15., TEXT_SIZE, BLACK);
 }
 
 fn handle_commands(game_running: &mut bool, game_paused: &mut bool, edit_mode: &mut bool) {
