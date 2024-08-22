@@ -37,8 +37,3 @@ impl Cell {
         (self.x, self.y)
     }
 }
-
-#[derive(Debug)]
-pub enum FailedToCreateCell {
-    InvalidCoordinates(String),
-}
