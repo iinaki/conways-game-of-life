@@ -14,16 +14,6 @@ const TITLE_POS_X: f32 = 0.3;
 const TITLE_POS_Y: f32 = 0.05;
 const GENERATIONS_POS_X: f32 = 0.1;
 const GENERATIONS_POS_Y: f32 = 0.1;
-const DEFAULT_SEED: [(i32, i32); 8] = [
-    (14, 13),
-    (14, 14),
-    (14, 15),
-    (15, 13),
-    (15, 15),
-    (16, 13),
-    (16, 14),
-    (16, 15),
-];
 
 /// This function displays the user interface for the Game of Life, including rendering the game screen,
 /// handling user input, and switching between different modes (playing, paused, edit).
@@ -363,9 +353,7 @@ fn restart_game_with_random_seed(game: &mut Game) {
 /// and manages the game loop. Handles user input and updates the game state
 /// based on user interactions.
 ///
-pub async fn run_ui() {
-    let mut game = Game::new_with_seed(DEFAULT_SEED.to_vec());
-
+pub async fn run_ui(mut game: Game) {
     let mut game_paused = false;
     let mut edit_mode = false;
     let mut generations_passed = 0;
