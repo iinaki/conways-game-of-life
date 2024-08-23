@@ -65,14 +65,11 @@ impl Game {
         new_live_cells
     }
 
-    /// Retrieves the coordinates of all live cells.
-    ///
-    /// # Returns
-    ///
-    /// A vector of tuples with the coordinates of the live cells.
-    ///
-    pub fn live_cells(&self) -> Vec<(i32, i32)> {
-        self.live_cells.iter().map(|cell| cell.position()).collect()
+    /// Iterates over the live cells and calls the given closure with the position of each cell.
+    pub fn live_cells_do<F: Fn((i32, i32))>(&self, closure: F) {
+        self.live_cells
+            .iter()
+            .for_each(|cell| closure(cell.position()));
     }
 
     /// Updates the game to the next generation.

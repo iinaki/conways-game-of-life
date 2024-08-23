@@ -104,15 +104,15 @@ fn render_screen(
         );
     }
 
-    for (x, y) in game.live_cells() {
+    game.live_cells_do(|(x, y)| {
         draw_rectangle(
             offset_x + x as f32 * sq_size,
             offset_y + y as f32 * sq_size,
             sq_size,
             sq_size,
             GRAY,
-        );
-    }
+        )
+    });
 
     let text = format!("Generations: {}", generations_passed);
     draw_text(
