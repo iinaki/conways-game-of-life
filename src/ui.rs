@@ -37,7 +37,10 @@ async fn display_ui(
 ) {
     let elapsed = prev_t.elapsed().as_secs_f32();
     *prev_t = Instant::now();
-    *acc += elapsed;
+
+    if !*game_paused {
+        *acc += elapsed;
+    }
 
     handle_commands(game, game_paused, edit_mode, fps);
 
