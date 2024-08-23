@@ -43,7 +43,7 @@ async fn display_ui(
         *acc += elapsed;
     }
 
-    handle_commands(game, game_paused, edit_mode, fps);
+    handle_commands(game, generations_passed, game_paused, edit_mode, fps);
 
     render_screen(game, generations_passed, game_paused, edit_mode, fps, acc);
 
@@ -310,7 +310,13 @@ fn show_playing_hud() {
 }
 
 /// Handles users commands.
-fn handle_commands(game: &mut Game, game_paused: &mut bool, edit_mode: &mut bool, fps: &mut f32) {
+fn handle_commands(
+    game: &mut Game,
+    generations_passed: &mut i32,
+    game_paused: &mut bool,
+    edit_mode: &mut bool,
+    fps: &mut f32,
+) {
     if is_key_pressed(KeyCode::Space) {
         *game_paused = !*game_paused;
     }
@@ -325,7 +331,7 @@ fn handle_commands(game: &mut Game, game_paused: &mut bool, edit_mode: &mut bool
     }
 
     if is_key_pressed(KeyCode::R) {
-        restart_game_with_random_seed(game);
+        restart_game_with_random_seed(game, generations_passed);
     }
 
     if is_key_pressed(KeyCode::Up) {
@@ -338,7 +344,7 @@ fn handle_commands(game: &mut Game, game_paused: &mut bool, edit_mode: &mut bool
 }
 
 /// Restarts the game with a random seed. The amount of cells and their positions are randomly generated.
-fn restart_game_with_random_seed(game: &mut Game) {
+fn restart_game_with_random_seed(game: &mut Game, generations_passed: &mut i32) {
     let mut rng = ::rand::thread_rng();
 
     let num_cells = rng.gen_range(1..=(SQUARES * SQUARES) as usize);
@@ -352,6 +358,7 @@ fn restart_game_with_random_seed(game: &mut Game) {
     }
 
     *game = Game::new_with_seed(seed);
+    *generations_passed = 0;
 }
 
 /// Runs the user interface of the Game of Life.
