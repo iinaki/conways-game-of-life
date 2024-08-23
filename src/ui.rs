@@ -133,6 +133,7 @@ fn render_screen(
     );
 }
 
+/// Renders the game based on the current mode (playing, paused, edit).
 fn render_mode(
     game: &mut Game,
     screen_params: (f32, f32, f32),
