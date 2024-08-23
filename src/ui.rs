@@ -99,13 +99,15 @@ fn render_screen(
     }
 
     game.live_cells_do(|(x, y)| {
-        draw_rectangle(
-            offset_x + x as f32 * sq_size,
-            offset_y + y as f32 * sq_size,
-            sq_size,
-            sq_size,
-            GRAY,
-        )
+        if x >= 0 && x < SQUARES.into() && y >= 0 && y < SQUARES.into() {
+            draw_rectangle(
+                offset_x + x as f32 * sq_size,
+                offset_y + y as f32 * sq_size,
+                sq_size,
+                sq_size,
+                GRAY,
+            )
+        }
     });
 
     let text = format!("Generations: {}", generations_passed);
@@ -117,7 +119,7 @@ fn render_screen(
         BLACK,
     );
 
-    let text = format!("FPS: {}", 1. / fps);
+    let text = format!("FPS: {}", (1. / fps).round());
     draw_text(
         &text,
         screen_width * GENERATIONS_POS_X,
