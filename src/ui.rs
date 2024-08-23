@@ -14,6 +14,7 @@ const TITLE_POS_X: f32 = 0.3;
 const TITLE_POS_Y: f32 = 0.05;
 const GENERATIONS_POS_X: f32 = 0.1;
 const GENERATIONS_POS_Y: f32 = 0.1;
+const DEFAULT_FPS: f32 = 1.0 / 5.0;
 
 /// This function displays the user interface for the Game of Life, including rendering the game screen,
 /// handling user input, and switching between different modes (playing, paused, edit).
@@ -362,7 +363,7 @@ pub async fn run_ui(mut game: Game) {
     let mut edit_mode = false;
     let mut generations_passed = 0;
 
-    let mut fps: f32 = 1.0 / 5.0;
+    let mut fps = DEFAULT_FPS;
     let mut acc = 0.0_f32;
     let mut prev_t = Instant::now();
 

@@ -15,3 +15,4 @@
 - 'E' to enter/exit Edit Mode, here you can place new cells and remove existing ones by clicking on them.
 - 'X' to exit the game.
 - 'R' to restart the game with a new randomly generated seed.
+- 'Up/Down' arrows to increase/decrease the speed of the game.
