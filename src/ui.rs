@@ -216,13 +216,8 @@ fn show_edit_hud() {
     );
 }
 
-/// Runs the game in paused mode, displaying the pause HUD.
+/// Runs the game in paused mode, displaying the pause HUD.  
 fn run_paused_mode() {
-    show_pause_hud();
-}
-
-/// Displays the HUD for paused mode, showing instructions for the user.    
-fn show_pause_hud() {
     let screen_width = screen_width();
     let screen_height = screen_height();
 
