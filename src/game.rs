@@ -39,11 +39,11 @@ impl Game {
 
         for cell in self.live_cells.iter() {
             for neighbor in cell.neighbour_positions() {
-                if !self.live_cells.contains(&neighbor) {
-                    let counter = dead_cells_map.entry(neighbor).or_insert(0);
+                if self.live_cells.contains(&neighbor) {
+                    let counter = neighbours_count.entry(cell.clone()).or_insert(0);
                     *counter += 1;
                 } else {
-                    let counter = neighbours_count.entry(cell.clone()).or_insert(0);
+                    let counter = dead_cells_map.entry(neighbor).or_insert(0);
                     *counter += 1;
                 }
             }
