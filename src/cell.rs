@@ -1,3 +1,14 @@
+const NEIGHBOUR_OFFSETS: [(i32, i32); 8] = [
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    (0, -1),
+    (0, 1),
+    (1, -1),
+    (1, 0),
+    (1, 1),
+];
+
 /// Represents a cell of the Game of Life.
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub struct Cell {
@@ -13,22 +24,13 @@ impl Cell {
 
     // Returns the positions of the 8 neighbours of a cell.
     pub fn neighbour_positions(&self) -> Vec<Cell> {
-        let mut positions = Vec::with_capacity(8);
-
-        for dx in -1..=1 {
-            for dy in -1..=1 {
-                if dx == 0 && dy == 0 {
-                    continue;
-                }
-
-                positions.push(Cell {
-                    x: self.x + dx,
-                    y: self.y + dy,
-                });
-            }
-        }
-
-        positions
+        NEIGHBOUR_OFFSETS
+            .iter()
+            .map(|&(dx, dy)| Cell {
+                x: self.x + dx,
+                y: self.y + dy,
+            })
+            .collect()
     }
 
     /// Returns the position of the cell as a tuple.
