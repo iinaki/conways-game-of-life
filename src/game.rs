@@ -65,7 +65,7 @@ impl Game {
         new_live_cells
     }
 
-    /// Iterates over the live cells and calls the given closure with the position of each cell.
+    /// Returns an iterator over the positions of the live cells.
     pub fn live_cells_positions(&self) -> impl Iterator<Item = (i32, i32)> + '_ {
         self.live_cells.iter().map(|cell| cell.position())
     }
