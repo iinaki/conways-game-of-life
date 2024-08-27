@@ -66,10 +66,8 @@ impl Game {
     }
 
     /// Iterates over the live cells and calls the given closure with the position of each cell.
-    pub fn live_cells_do<F: Fn((i32, i32))>(&self, closure: F) {
-        self.live_cells
-            .iter()
-            .for_each(|cell| closure(cell.position()));
+    pub fn live_cells_positions(&self) -> impl Iterator<Item = (i32, i32)> + '_ {
+        self.live_cells.iter().map(|cell| cell.position())
     }
 
     /// Updates the game to the next generation.

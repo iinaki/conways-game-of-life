@@ -98,17 +98,15 @@ fn render_screen(
         );
     }
 
-    game.live_cells_do(|(x, y)| {
-        if x >= 0 && x < SQUARES.into() && y >= 0 && y < SQUARES.into() {
-            draw_rectangle(
-                offset_x + x as f32 * sq_size,
-                offset_y + y as f32 * sq_size,
-                sq_size,
-                sq_size,
-                GRAY,
-            )
-        }
-    });
+    for (x, y) in game.live_cells_positions() {
+        draw_rectangle(
+            offset_x + x as f32 * sq_size,
+            offset_y + y as f32 * sq_size,
+            sq_size,
+            sq_size,
+            GRAY,
+        );
+    }
 
     let text = format!("Generations: {}", generations_passed);
     draw_text(
