@@ -39,11 +39,11 @@ impl Game {
 
         for cell in self.live_cells.iter() {
             for neighbor in cell.neighbour_positions() {
-                if !self.live_cells.contains(&neighbor) {
-                    let counter = dead_cells_map.entry(neighbor).or_insert(0);
+                if self.live_cells.contains(&neighbor) {
+                    let counter = neighbours_count.entry(cell.clone()).or_insert(0);
                     *counter += 1;
                 } else {
-                    let counter = neighbours_count.entry(cell.clone()).or_insert(0);
+                    let counter = dead_cells_map.entry(neighbor).or_insert(0);
                     *counter += 1;
                 }
             }
@@ -65,11 +65,9 @@ impl Game {
         new_live_cells
     }
 
-    /// Iterates over the live cells and calls the given closure with the position of each cell.
-    pub fn live_cells_do<F: Fn((i32, i32))>(&self, closure: F) {
-        self.live_cells
-            .iter()
-            .for_each(|cell| closure(cell.position()));
+    /// Returns an iterator over the positions of the live cells.
+    pub fn live_cells_positions(&self) -> impl Iterator<Item = (i32, i32)> + '_ {
+        self.live_cells.iter().map(|cell| cell.position())
     }
 
     /// Updates the game to the next generation.
